@@ -11,12 +11,18 @@ class Pure extends Component {
     this.setState({ [name]: value });
   };
   render() {
+    console.log('in pure component example');
     const { name, header } = this.state;
     return (
       <div style={{ textAlign: 'center' }}>
         <BackButton history={this.props.history} />
         <Header title={header} />
-        <input name="name" placeholder="Enter your name" value={name} onChange={this.handleInput} />
+        <input
+          name="name"
+          placeholder="Enter your name"
+          value={name}
+          onChange={this.handleInput}
+        />
         <br />
         <p>{name}</p>
       </div>

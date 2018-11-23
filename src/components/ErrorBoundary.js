@@ -15,17 +15,30 @@ class ErrorBoundaryExample extends Component {
     }
   };
   render() {
+    console.log('in error boundary example');
     const { counter } = this.state;
     return (
       <ErrorBoundary>
         <div style={{ textAlign: 'center' }}>
-          <BackButton />
-          <h1>Error Boundary Example</h1>
-          <br />
-          <input type="button" name="counter" value="+" onClick={this.handleCounter} />
-          {counter.toString()}
+          <BackButton history={this.props.history} />
         </div>
+        <Counter counter={counter} handleCounter={this.handleCounter} />
       </ErrorBoundary>
+    );
+  }
+}
+
+class Counter extends Component {
+  render() {
+    const { counter, handleCounter } = this.props;
+    return (
+      <div style={{ textAlign: 'center' }}>
+        {/* <BackButton /> */}
+        <h1>Error Boundary Example</h1>
+        <br />
+        <input type="button" name="counter" value="+" onClick={handleCounter} />
+        {counter.toString()}
+      </div>
     );
   }
 }
@@ -40,11 +53,11 @@ class ErrorBoundary extends Component {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
-  // componentDidCatch(error, info) {
-  //   // You can also log the error to an error reporting service
-  //   console.log('catch ', error, info);
-  //   this.setState({ hasError: true, errorInfo: info, error: error });
-  // }
+  componentDidCatch(error, info) {
+    // You can also log the error to an error reporting service
+    console.log('catch ', error, info);
+    this.setState({ hasError: true, errorInfo: info, error: error });
+  }
   render() {
     if (this.state.hasError) {
       // You can render any custom fallback UI
@@ -53,7 +66,7 @@ class ErrorBoundary extends Component {
           <h1>Something went wrong.</h1>
           {this.state.error.toString()}
           <br />
-          {/* {this.state.errorInfo.componentStack} */}
+          {this.state.errorInfo.componentStack}
         </div>
       );
     }
